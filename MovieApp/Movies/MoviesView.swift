@@ -17,12 +17,14 @@ struct MoviesView: View {
                 .font(.largeTitle)
             LazyVGrid(columns: columns, spacing: 24) {
                 ForEach(viewModel.movieDetails) { movie in
-                    MovieCell(
-                        title: movie.title,
-                        genres: viewModel.getGenresString(ids: movie.genreIds),
-                        rating: movie.rating,
-                        posterUrl: movie.posterUrl
-                    )
+                    NavigationLink(destination: MovieDetailView(movieDetails: movie)) {
+                        MovieCell(
+                            title: movie.title,
+                            genres: movie.genres.joined(separator: " | "),
+                            rating: movie.rating,
+                            posterUrl: movie.posterUrl
+                        )
+                    }.buttonStyle(.plain)
                 }
             }
         }
@@ -30,7 +32,6 @@ struct MoviesView: View {
         .padding(.horizontal)
         .onAppear() {
             Task {
-                await viewModel.fetchGenres()
                 await viewModel.fetchMovies()
             }
         }

@@ -17,22 +17,33 @@ struct MovieDetailsApi: Decodable {
     let genre_ids: [Int]
     let vote_average: Double
     let poster_path: String
+    let backdrop_path: String
+    let overview: String
     
-    func toModel() -> MovieDetails {
+    func toModel(allGenres: [Genre]) -> MovieDetails {
         MovieDetails(
             id: String(id),
             title: title,
-            genreIds: genre_ids.map { String($0) },
+            genres: getGenresByIds(ids: genre_ids, allGenres: allGenres),
             rating: String(format: "%.1f", vote_average),
-            posterUrl: "https://image.tmdb.org/t/p/w500\(poster_path)"
+            posterUrl: "https://image.tmdb.org/t/p/w500\(poster_path)",
+            backdropUrl: "https://image.tmdb.org/t/p/w500\(backdrop_path)",
+            overview: overview
         )
+    }
+    
+    private func getGenresByIds(ids: [Int], allGenres: [Genre]) -> [String] {
+        guard !allGenres.isEmpty else { return [] }
+        return ids.compactMap { id in
+            allGenres.first { $0.id == String(id) }?.name
+        }
     }
 }
 
 extension Array where Element == MovieDetailsApi {
-    func toModel() -> [MovieDetails] {
+    func toModel(allGenres: [Genre]) -> [MovieDetails] {
         map { movieApi in
-            movieApi.toModel()
+            movieApi.toModel(allGenres: allGenres)
         }
     }
 }

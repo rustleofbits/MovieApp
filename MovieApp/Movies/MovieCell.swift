@@ -32,7 +32,8 @@ struct MovieCell: View {
                 .font(.caption)
                 .foregroundStyle(.gray)
         }
-        .frame(maxHeight: .infinity, alignment: .top)
+        .frame(maxHeight: .infinity, alignment: .topLeading)
+        .multilineTextAlignment(.leading)
     }
 }
 

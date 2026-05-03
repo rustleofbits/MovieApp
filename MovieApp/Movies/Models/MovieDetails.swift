@@ -10,7 +10,9 @@ import Foundation
 struct MovieDetails: Identifiable {
     let id: String
     let title: String
-    let genreIds: [String]
+    let genres: [String]
     let rating: String
     let posterUrl: String
+    let backdropUrl: String
+    let overview: String
 }
