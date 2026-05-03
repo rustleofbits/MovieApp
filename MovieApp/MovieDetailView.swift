@@ -19,7 +19,7 @@ struct MovieDetailView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .overlay(
-                            DimmedBackgroundWithRating(rating: movieDetails.rating, cornerRadius: 0.0)
+                            DimmedBackgroundWithRating(rating: movieDetails.rating, cornerRadius: 0.0, opacityStart: 1)
                         )
                 case .empty, .failure:
                     EmptyView()
@@ -35,6 +35,7 @@ struct MovieDetailView: View {
                         .font(.caption)
                         .foregroundStyle(.gray)
                 }
+                .multilineTextAlignment(.center)
                 Text(movieDetails.overview)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)

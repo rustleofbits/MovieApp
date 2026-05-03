@@ -18,7 +18,7 @@ struct ImageView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .frame(height: 250)
             .overlay(
-                DimmedBackgroundWithRating(rating: rating, cornerRadius: 10.0)
+                DimmedBackgroundWithRating(rating: rating, cornerRadius: 10.0, opacityStart: 0.7)
             )
     }
 }

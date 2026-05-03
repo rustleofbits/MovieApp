@@ -10,11 +10,12 @@ import SwiftUI
 struct DimmedBackgroundWithRating: View {
     var rating: String? = nil
     let cornerRadius: CGFloat
+    let opacityStart: Double
     
     var body: some View {
         ZStack(alignment: .topLeading) {
             LinearGradient(
-                colors: [.black.opacity(0.7), .clear],
+                colors: [.black.opacity(opacityStart), .clear],
                 startPoint: .top,
                 endPoint: .center
             )
