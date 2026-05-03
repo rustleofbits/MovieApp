@@ -9,11 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ScrollView {
+            MoviesView(viewModel: MoviesVM())
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -24,7 +21,6 @@ struct ContentView: View {
         }
         .navigationTitle("MoviesApp")
         .navigationBarTitleDisplayMode(.inline)
-        .padding()
     }
 }
 
