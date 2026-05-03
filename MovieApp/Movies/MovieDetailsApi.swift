@@ -16,13 +16,15 @@ struct MovieDetailsApi: Decodable {
     let id: Int
     let genre_ids: [Int]
     let vote_average: Double
+    let poster_path: String
     
     func toModel() -> MovieDetails {
         MovieDetails(
             id: String(id),
             title: title,
-            genres: ["Test", "Yes"],
-            rating: String(format: "%.1f", vote_average)
+            genreIds: genre_ids.map { String($0) },
+            rating: String(format: "%.1f", vote_average),
+            posterUrl: "https://image.tmdb.org/t/p/w500\(poster_path)"
         )
     }
 }

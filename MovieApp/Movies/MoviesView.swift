@@ -19,8 +19,9 @@ struct MoviesView: View {
                 ForEach(viewModel.movieDetails) { movie in
                     MovieCell(
                         title: movie.title,
-                        genres: getGenresString(genres: movie.genres),
-                        rating: movie.rating
+                        genres: viewModel.getGenresString(ids: movie.genreIds),
+                        rating: movie.rating,
+                        posterUrl: movie.posterUrl
                     )
                 }
             }
@@ -29,13 +30,10 @@ struct MoviesView: View {
         .padding(.horizontal)
         .onAppear() {
             Task {
+                await viewModel.fetchGenres()
                 await viewModel.fetchMovies()
             }
         }
-    }
-    
-    func getGenresString(genres: [String]) -> String {
-        return genres.joined(separator: " | ")
     }
 }
 //

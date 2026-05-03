@@ -11,34 +11,22 @@ struct MovieCell: View {
     let title: String
     let genres: String
     let rating: String
+    let posterUrl: String
     
     var body: some View {
         VStack(alignment: .leading) {
-            Image("Mario")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .overlay(
-                    ZStack(alignment: .topLeading) {
-                        LinearGradient(
-                            colors: [.black.opacity(0.7), .clear],
-                            startPoint: .top,
-                            endPoint: .center
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        Text(rating)
-                            .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color(hex: "169C1B"))
-                            )
-                            .padding([.top, .leading], 10)
-                            .foregroundStyle(.white)
-                            .bold()
-                            .font(.caption)
-                            
-                    }
-                )
+            AsyncImage(url: URL(string: posterUrl)) { res in
+                switch res {
+                case .empty:
+                    SkeletonView()
+                case .success(let image):
+                    ImageView(image: image, rating: rating)
+                case .failure:
+                    SkeletonView()
+                @unknown default:
+                    SkeletonView()
+                }
+            }
             Text(title)
             Text(genres)
                 .font(.caption)
@@ -49,5 +37,5 @@ struct MovieCell: View {
 }
 
 #Preview {
-    MovieCell(title: "Mario", genres: "comedy | cartoon", rating: "5.9")
+    MovieCell(title: "Mario", genres: "comedy | cartoon", rating: "5.9", posterUrl: "https://image.tmdb.org/t/p/w500/eTp7gSPkSF3Aw79mNx1NkBP1PZT.jpg")
 }
