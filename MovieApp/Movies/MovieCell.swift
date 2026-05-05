@@ -15,7 +15,7 @@ struct MovieCell: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            AsyncImage(url: URL(string: posterUrl)) { res in
+            AsyncImage(url: URL(string: posterUrl ?? "")) { res in
                 switch res {
                 case .empty:
                     SkeletonView(height: 250)

@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 struct SearchView: View {
     @StateObject var viewModel = SearchVM()
     @State var searchText = ""
+    @State var searchTask: Task<Void, Never>? = nil
     
     var body: some View {
         List {
@@ -22,8 +24,14 @@ struct SearchView: View {
         }
         .searchable(text: $searchText, prompt: "Search for movies")
         .onChange(of: searchText) { _, newValue in
-            Task {
+            searchTask?.cancel()
+            searchTask = Task {
                 await viewModel.search(queryStr: newValue)
+            }
+        }
+        .onAppear() {
+            Task {
+                await viewModel.fetchGenres()
             }
         }
     }

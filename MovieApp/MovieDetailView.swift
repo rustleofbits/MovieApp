@@ -12,7 +12,7 @@ struct MovieDetailView: View {
     
     var body: some View {
         ScrollView {
-            AsyncImage(url: URL(string: movieDetails.backdropUrl)) { phase in
+            AsyncImage(url: URL(string: movieDetails.backdropUrl ?? "")) { phase in
                 switch phase {
                 case .success(let image):
                     image

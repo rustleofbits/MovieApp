@@ -12,7 +12,7 @@ struct MovieSearchCell: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            AsyncImage(url: URL(string: movie.posterUrl)) { phase in
+            AsyncImage(url: URL(string: movie.posterUrl ?? "")) { phase in
                 switch phase {
                 case .empty, .failure:
                     SkeletonView(width: 80, height: 120)

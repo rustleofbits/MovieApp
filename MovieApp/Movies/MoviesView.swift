@@ -22,7 +22,7 @@ struct MoviesView: View {
                             title: movie.title,
                             genres: movie.genres.joined(separator: " | "),
                             rating: movie.rating,
-                            posterUrl: movie.posterUrl
+                            posterUrl: movie.posterUrl ?? ""
                         )
                     }.buttonStyle(.plain)
                 }

@@ -12,7 +12,7 @@ struct MovieDetails: Identifiable {
     let title: String
     let genres: [String]
     let rating: String
-    let posterUrl: String
-    let backdropUrl: String
+    let posterUrl: String?
+    let backdropUrl: String?
     let overview: String
 }

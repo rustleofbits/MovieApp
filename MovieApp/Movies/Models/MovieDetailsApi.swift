@@ -14,21 +14,21 @@ struct ResponseApi: Decodable {
 struct MovieDetailsApi: Decodable {
     let title: String
     let id: Int
-    let genre_ids: [Int]
-    let vote_average: Double
-    let poster_path: String
-    let backdrop_path: String
-    let overview: String
+    let genre_ids: [Int]?
+    let vote_average: Double?
+    let poster_path: String?
+    let backdrop_path: String?
+    let overview: String?
     
     func toModel(allGenres: [Genre]) -> MovieDetails {
         MovieDetails(
             id: String(id),
             title: title,
-            genres: getGenresByIds(ids: genre_ids, allGenres: allGenres),
-            rating: String(format: "%.1f", vote_average),
-            posterUrl: "https://image.tmdb.org/t/p/w500\(poster_path)",
-            backdropUrl: "https://image.tmdb.org/t/p/w500\(backdrop_path)",
-            overview: overview
+            genres: getGenresByIds(ids: genre_ids ?? [], allGenres: allGenres),
+            rating: String(format: "%.1f", vote_average ?? "0.0"),
+            posterUrl: "https://image.tmdb.org/t/p/w500\(poster_path ?? "")",
+            backdropUrl: "https://image.tmdb.org/t/p/w500\(backdrop_path ?? "")",
+            overview: overview ?? ""
         )
     }
     
