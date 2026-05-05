@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct SkeletonView: View {
+    var width: CGFloat?
+    var height: CGFloat?
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .fill(.gray)
-            .frame(height: 250)
+            .frame(width: width, height: height)
     }
 }

@@ -18,13 +18,13 @@ struct MovieCell: View {
             AsyncImage(url: URL(string: posterUrl)) { res in
                 switch res {
                 case .empty:
-                    SkeletonView()
+                    SkeletonView(height: 250)
                 case .success(let image):
                     ImageView(image: image, rating: rating)
                 case .failure:
-                    SkeletonView()
+                    SkeletonView(height: 250)
                 @unknown default:
-                    SkeletonView()
+                    SkeletonView(height: 250)
                 }
             }
             Text(title)
