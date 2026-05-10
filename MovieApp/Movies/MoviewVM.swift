@@ -16,16 +16,22 @@ class MoviesVM: ObservableObject {
     @Published var error: String?
     
     func fetchMovies() async {
-        error = nil
+        await MainActor.run {
+            error = nil
+        }
         let allGenres = await fetchGenres()
         guard var url = URL(string: urlString) else { return }
         url.append(queryItems: [URLQueryItem(name: "api_key", value: apiKey)])
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decoded = try JSONDecoder().decode(ResponseApi.self, from: data)
-            movieDetails = decoded.results.toModel(allGenres: allGenres)
+            await MainActor.run {
+                movieDetails = decoded.results.toModel(allGenres: allGenres)
+            }
         } catch {
-            self.error = error.localizedDescription
+            await MainActor.run {
+                self.error = error.localizedDescription
+            }
         }
     }
     
