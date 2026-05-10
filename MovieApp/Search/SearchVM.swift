@@ -55,7 +55,9 @@ class SearchVM: ObservableObject {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decoded = try JSONDecoder().decode(GenreResponse.self, from: data)
-            genres = decoded.toModel()
+            await MainActor.run {
+                genres = decoded.toModel()
+            }
         } catch {
         }
     }
