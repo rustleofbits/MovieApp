@@ -13,10 +13,15 @@ class SearchVM: ObservableObject {
     private let urlStr = "https://api.themoviedb.org/3/search/movie"
     private let genresUrlString = "https://api.themoviedb.org/3/genre/movie/list"
     private var genres: [Genre] = []
+    @Published var error: String?
     
     private let apiKey = Bundle.main.infoDictionary?["API_KEY"] as? String
     
     func search(queryStr: String) async {
+        await MainActor.run {
+            self.error = nil
+        }
+        guard !queryStr.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         guard var url = URL(string: urlStr) else { return }
         url.append(
             queryItems: [
@@ -29,9 +34,18 @@ class SearchVM: ObservableObject {
             let decoded = try JSONDecoder().decode(ResponseApi.self, from: data)
             await MainActor.run {
                 movies = decoded.results.toModel(allGenres: genres)
+                if movies.isEmpty {
+                    self.error = "No movies"
+                } else {
+                    self.error = nil
+                }
             }
+        } catch is CancellationError {
+        } catch let urlError as URLError where urlError.code == .cancelled {
         } catch {
-            print("!!! ", error)
+            await MainActor.run {
+                self.error = error.localizedDescription
+            }
         }
     }
     

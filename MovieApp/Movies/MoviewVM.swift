@@ -13,8 +13,10 @@ class MoviesVM: ObservableObject {
     private let urlString = "https://api.themoviedb.org/3/movie/popular"
     private let genresUrlString = "https://api.themoviedb.org/3/genre/movie/list"
     private let apiKey = Bundle.main.infoDictionary?["API_KEY"] as? String ?? ""
+    @Published var error: String?
     
     func fetchMovies() async {
+        error = nil
         let allGenres = await fetchGenres()
         guard var url = URL(string: urlString) else { return }
         url.append(queryItems: [URLQueryItem(name: "api_key", value: apiKey)])
@@ -23,7 +25,7 @@ class MoviesVM: ObservableObject {
             let decoded = try JSONDecoder().decode(ResponseApi.self, from: data)
             movieDetails = decoded.results.toModel(allGenres: allGenres)
         } catch {
-            
+            self.error = error.localizedDescription
         }
     }
     

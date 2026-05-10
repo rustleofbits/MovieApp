@@ -13,18 +13,26 @@ struct MoviesView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Popular movies")
-                .font(.largeTitle)
-            LazyVGrid(columns: columns, spacing: 24) {
-                ForEach(viewModel.movieDetails) { movie in
-                    NavigationLink(destination: MovieDetailView(movieDetails: movie)) {
-                        MovieCell(
-                            title: movie.title,
-                            genres: movie.genres.joined(separator: " | "),
-                            rating: movie.rating,
-                            posterUrl: movie.posterUrl ?? ""
-                        )
-                    }.buttonStyle(.plain)
+            if let error = viewModel.error {
+                Text("Something went wrong")
+                    .font(.largeTitle)
+                Text(error)
+            } else {
+                Group {
+                    Text("Popular movies")
+                        .font(.largeTitle)
+                    LazyVGrid(columns: columns, spacing: 24) {
+                        ForEach(viewModel.movieDetails) { movie in
+                            NavigationLink(destination: MovieDetailView(movieDetails: movie)) {
+                                MovieCell(
+                                    title: movie.title,
+                                    genres: movie.genres.joined(separator: " | "),
+                                    rating: movie.rating,
+                                    posterUrl: movie.posterUrl ?? ""
+                                )
+                            }.buttonStyle(.plain)
+                        }
+                    }
                 }
             }
         }

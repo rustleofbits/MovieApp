@@ -14,12 +14,20 @@ struct SearchView: View {
     @State var searchTask: Task<Void, Never>? = nil
     
     var body: some View {
-        List {
-            ForEach(viewModel.movies) { movie in
-                NavigationLink(destination: MovieDetailView(movieDetails: movie)) {
-                    MovieSearchCell(movie: movie)
+        VStack {
+            if let errorMessage = viewModel.error {
+                Text("Something went wrong")
+                    .font(.title)
+                Text(errorMessage)
+            } else {
+                List {
+                    ForEach(viewModel.movies) { movie in
+                        NavigationLink(destination: MovieDetailView(movieDetails: movie)) {
+                            MovieSearchCell(movie: movie)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
-                .buttonStyle(.plain)
             }
         }
         .searchable(text: $searchText, prompt: "Search for movies")
